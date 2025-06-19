@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 5 Developer Tools - LinkedIn Carousel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .carousel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #4a90e2 #f0f0f0;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar-thumb {
+            background: #4a90e2;
+            border-radius: 10px;
+        }
+
+        .slide {
+            min-width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: translateY(-5px);
+        }
+
+        .slide-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .slide-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .tool-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .tool-description {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .features-list li {
+            color: #555;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .mini-tip {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+            margin-top: 15px;
+        }
+
+        .mini-tip strong {
+            color: #d63031;
+        }
+
+        .cover-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cover-slide .slide-content {
+            color: white;
+        }
+
+        .cover-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cover-subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .tech-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tech-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-slide {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-slide .slide-content {
+            color: white;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .cta-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .hashtags {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                min-width: 320px;
+            }
+            
+            .cover-title {
+                font-size: 24px;
+            }
+            
+            .tool-name {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel-container">
+        <div class="carousel-wrapper" id="carousel">
+            <!-- Slide 1: Cover -->
+            <div class="slide cover-slide">
+                <div class="slide-number">1/7</div>
+                <div class="slide-content">
+                    <div class="cover-title">🧰 Top 5 Tools I Use as a Full Stack Developer</div>
+                    <div class="cover-subtitle">Which one do you use too?</div>
+                    <div class="tech-icons">
+                        <div class="tech-icon">💻</div>
+                        <div class="tech-icon">🔧</div>
+                        <div class="tech-icon">🌐</div>
+                        <div class="tech-icon">🎨</div>
+                        <div class="tech-icon">🔍</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: VS Code -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-number">2/7</div>
+                    <div class="tool-icon" style="background: #007ACC; color: white;">💻</div>
+                </div>
+                <div class="slide-content">
+                    <div class="tool-name">Visual Studio Code</div>
+                    <div class="tool-description">My daily coding HQ</div>
+                    <ul class="features-list">
+                        <li>Lightweight but powerful</li>
+                        <li>Killer extensions (ESLint, Prettier, GitLens)</li>
+                        <li>Integrated terminal & debugging</li>
+                        <li>Customizable themes & shortcuts</li>
+                    </ul>
+                    <div class="mini-tip">
+                        <strong>💡 Mini Tip:</strong> Try "Thunder Client" for API testing directly in VS Code!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Postman -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-number">3/7</div>
+                    <div class="tool-icon" style="background: #FF6C37; color: white;">🔄</div>
+                </div>
+                <div class="slide-content">
+                    <div class="tool-name">Postman</div>
+                    <div class="tool-description">My go-to for REST API testing</div>
+                    <ul class="features-list">
+                        <li>Simplifies requests & headers</li>
+                        <li>Great for automation collections</li>
+                        <li>Team collaboration features</li>
+                        <li>Mock servers & monitoring</li>
+                    </ul>
+                    <div class="mini-tip">
+                        <strong>💡 Mini Tip:</strong> Save time with reusable environments for different API endpoints!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Git & GitHub -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-number">4/7</div>
+                    <div class="tool-icon" style="background: #24292e; color: white;">🌐</div>
+                </div>
+                <div class="slide-content">
+                    <div class="tool-name">Git + GitHub</div>
+                    <div class="tool-description">Version control & teamwork</div>
+                    <ul class="features-list">
+                        <li>Track every change</li>
+                        <li>Collaborate smoothly with PRs & branches</li>
+                        <li>Issue tracking & project management</li>
+                        <li>CI/CD integration</li>
+                    </ul>
+                    <div class="mini-tip">
+                        <strong>💡 Mini Tip:</strong> Use `.gitignore` smartly to keep repos clean and secure!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Figma -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-number">5/7</div>
+                    <div class="tool-icon" style="background: #F24E1E; color: white;">🎨</div>
+                </div>
+                <div class="slide-content">
+                    <div class="tool-name">Figma</div>
+                    <div class="tool-description">UI/UX designs turned dev-ready</div>
+                    <ul class="features-list">
+                        <li>Pixel-perfect assets</li>
+                        <li>Inspect CSS directly</li>
+                        <li>Real-time collaboration</li>
+                        <li>Component libraries & design systems</li>
+                    </ul>
+                    <div class="mini-tip">
+                        <strong>💡 Mini Tip:</strong> Ask designers to label layers for smoother handoffs!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Chrome DevTools -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-number">6/7</div>
+                    <div class="tool-icon" style="background: #4285F4; color: white;">🔍</div>
+                </div>
+                <div class="slide-content">
+                    <div class="tool-name">Chrome DevTools</div>
+                    <div class="tool-description">Debug like a pro</div>
+                    <ul class="features-list">
+                        <li>Inspect layout, console logs, network calls</li>
+                        <li>Live CSS editing</li>
+                        <li>Performance profiling</li>
+                        <li>Mobile device simulation</li>
+                    </ul>
+                    <div class="mini-tip">
+                        <strong>💡 Mini Tip:</strong> Try Lighthouse tab for performance audits and SEO insights!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: CTA -->
+            <div class="slide cta-slide">
+                <div class="slide-number">7/7</div>
+                <div class="slide-content">
+                    <div class="cta-title">🔥 These tools = 90% of my daily stack</div>
+                    <div class="cta-text">Which one do YOU use too? 👇</div>
+                    <div class="cta-text">Drop it in the comments</div>
+                    <div class="cta-text">📌 Follow for more dev tips</div>
+                    <div class="hashtags">
+                        #WebDevelopment #FullStackDeveloper #CodingTools #DevTips #TechStack #ReactJS #NodeJS #JavaScript #ProgrammingLife
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <p>👆 Scroll horizontally to see all slides</p>
+            <div class="nav-dots" id="navDots">
+                <div class="nav-dot active"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+                <div class="nav-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const carousel = document.getElementById('carousel');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const slides = document.querySelectorAll('.slide');
+
+        // Update active dot based on scroll position
+        carousel.addEventListener('scroll', () => {
+            const scrollLeft = carousel.scrollLeft;
+            const slideWidth = slides[0].offsetWidth + 20; // including gap
+            const activeIndex = Math.round(scrollLeft / slideWidth);
+            
+            navDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeIndex);
+            });
+        });
+
+        // Navigate to specific slide when clicking dots
+        navDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                const slideWidth = slides[0].offsetWidth + 20;
+                carousel.scrollTo({
+                    left: slideWidth * index,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Auto-scroll demo (optional - remove if not needed)
+        let autoScrollInterval;
+        let currentSlide = 0;
+
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                const slideWidth = slides[0].offsetWidth + 20;
+                carousel.scrollTo({
+                    left: slideWidth * currentSlide,
+                    behavior: 'smooth'
+                });
+            }, 4000);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+
+        // Start auto-scroll
+        startAutoScroll();
+
+        // Stop auto-scroll when user interacts
+        carousel.addEventListener('mouseenter', stopAutoScroll);
+        carousel.addEventListener('touchstart', stopAutoScroll);
+        
+        // Resume auto-scroll when user stops interacting
+        carousel.addEventListener('mouseleave', startAutoScroll);
+    </script>
+</body>
+</html>
