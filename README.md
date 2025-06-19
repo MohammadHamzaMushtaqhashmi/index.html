@@ -64,7 +64,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link](https://your-username.github.io/top-5-developer-tools)
+- [Live Demo Link](https://mohammadhamzamushtaqhashmi.github.io/dev-tools-carousel/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
